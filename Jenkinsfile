@@ -3,7 +3,7 @@ pipeline {
     environment {
         DOCKER_CREDENTIALS_ID = 'dockerhub-staratel'
         REPO_URL = 'git@github.com:staratel74/nginx-repo.git'
-        DOCKER_IMAGE = 'staratel/nginx-repo:v1.8'
+        DOCKER_IMAGE = 'staratel/nginx-repo:v1.9'
     }
     stages {
         stage('Clone Repository') {
