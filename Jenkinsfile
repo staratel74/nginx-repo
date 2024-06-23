@@ -6,7 +6,7 @@ pipeline {
         DOCKER_IMAGE = 'nginx:v1.7'
     }
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
                 git branch: 'main', credentialsId: 'github-staratel74', url: "${REPO_URL}"
             }
