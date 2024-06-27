@@ -32,6 +32,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([file(credentialsId: "${KUBECONFIG_CREDENTIALS_ID}", variable: 'KUBECONFIG')]) {
+                        // Step to deploy the application
                         sh '''
                         cat <<EOF | kubectl --kubeconfig=$KUBECONFIG apply -f -
                         apiVersion: apps/v1
@@ -55,7 +56,12 @@ pipeline {
                                 image: staratel/nginx-repo:v1.9
                                 ports:
                                 - containerPort: 80
-                        ---
+                        EOF
+                        '''
+
+                        // Step to create the service
+                        sh '''
+                        cat <<EOF | kubectl --kubeconfig=$KUBECONFIG apply -f -
                         apiVersion: v1
                         kind: Service
                         metadata:
