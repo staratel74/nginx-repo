@@ -34,48 +34,48 @@ pipeline {
                     withCredentials([file(credentialsId: "${KUBECONFIG_CREDENTIALS_ID}", variable: 'KUBECONFIG')]) {
                         // Step to deploy the application
                         sh '''
-                        cat <<EOF | kubectl --kubeconfig=$KUBECONFIG apply -f -
-                        apiVersion: apps/v1
-                        kind: Deployment
-                        metadata:
-                          name: nginx-deployment
-                          labels:
-                            app: nginx
-                        spec:
-                          replicas: 2
-                          selector:
-                            matchLabels:
-                              app: nginx
-                          template:
-                            metadata:
-                              labels:
-                                app: nginx
-                            spec:
-                              containers:
-                              - name: nginx
-                                image: staratel/nginx-repo:v1.9
-                                ports:
-                                - containerPort: 80
-                        EOF
+                        kubectl --kubeconfig=$KUBECONFIG apply -f - <<EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: staratel/nginx-repo:v1.9
+        ports:
+        - containerPort: 80
+EOF
                         '''
 
                         // Step to create the service
                         sh '''
-                        cat <<EOF | kubectl --kubeconfig=$KUBECONFIG apply -f -
-                        apiVersion: v1
-                        kind: Service
-                        metadata:
-                          name: nginx-service
-                        spec:
-                          selector:
-                            app: nginx
-                          ports:
-                          - protocol: TCP
-                            port: 80
-                            targetPort: 80
-                            nodePort: 30000
-                          type: NodePort
-                        EOF
+                        kubectl --kubeconfig=$KUBECONFIG apply -f - <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 30000
+  type: NodePort
+EOF
                         '''
                     }
                 }
