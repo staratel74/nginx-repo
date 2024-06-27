@@ -3,8 +3,8 @@ pipeline {
     environment {
         DOCKER_CREDENTIALS_ID = 'dockerhub-staratel'
         REPO_URL = 'git@github.com:staratel74/nginx-repo.git'
-        DOCKER_IMAGE = 'nginx:v1.9.1'
-        KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-yandex'
+        DOCKER_IMAGE = 'staratel/nginx-repo:v1.9'
+        KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-yc'
         KUBE_NAMESPACE = 'default'
     }
     stages {
@@ -29,12 +29,11 @@ pipeline {
                 }
             }
         }
-    }
-    stage('Deploy to Kubernetes') {
-        steps {
-            script {
-                withCredentials([file(credentialsId: "${KUBECONFIG_CREDENTIALS_ID}", variable: 'KUBECONFIG')]) {
-                    sh '''
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    withCredentials([file(credentialsId: "${KUBECONFIG_CREDENTIALS_ID}", variable: 'KUBECONFIG')]) {
+                        sh '''
                         cat <<EOF | kubectl --kubeconfig=$KUBECONFIG apply -f -
                         apiVersion: apps/v1
                         kind: Deployment
@@ -75,6 +74,7 @@ pipeline {
                           type: NodePort
                         EOF
                         '''
+                    }
                 }
             }
         }
