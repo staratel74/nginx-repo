@@ -4,7 +4,7 @@ pipeline {
         DOCKER_CREDENTIALS_ID = 'dockerhub-staratel'
         REPO_URL = 'git@github.com:staratel74/nginx-repo.git'
         DOCKER_IMAGE = 'staratel/nginx-repo:v1.9'
-        KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-yc'
+        KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-yandex'
         KUBE_NAMESPACE = 'default'
     }
     stages {
