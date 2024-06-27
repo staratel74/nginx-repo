@@ -5,7 +5,6 @@ pipeline {
         REPO_URL = 'git@github.com:staratel74/nginx-repo.git'
         DOCKER_IMAGE = 'staratel/nginx-repo:v1.9'
         KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-yandex'
-        KUBE_NAMESPACE = 'default'
     }
     stages {
         stage('Clone Repository') {
@@ -53,7 +52,7 @@ pipeline {
                             spec:
                               containers:
                               - name: nginx
-                                image: ${DOCKER_IMAGE}
+                                image: staratel/nginx-repo:v1.9
                                 ports:
                                 - containerPort: 80
                         ---
@@ -83,4 +82,3 @@ pipeline {
         }
     }
 }
-
