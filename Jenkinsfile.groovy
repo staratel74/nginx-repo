@@ -2,9 +2,9 @@ pipeline {
     agent any
     environment {
         DOCKER_CREDENTIALS_ID = 'dockerhub-staratel'
-        REPO_URL = 'git@github.com:staratel74/nginx-repo.git'
-        DOCKER_IMAGE = 'staratel/nginx-repo:v1.9'
         KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-yandex'
+        REPO_URL = 'git@github.com:staratel74/nginx-repo.git'
+        DOCKER_IMAGE = 'staratel/nginx-repo:v1.9.1'
     }
     stages {
         stage('Clone Repository') {
@@ -53,7 +53,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: staratel/nginx-repo:v1.9
+        image: ${DOCKER_IMAGE} # staratel/nginx-repo:v1.9
         ports:
         - containerPort: 80
 EOF
