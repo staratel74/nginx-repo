@@ -53,7 +53,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: staratel/nginx-repo:v1.10.0  # ${DOCKER_IMAGE}
+        image: # ${DOCKER_IMAGE}
         ports:
         - containerPort: 80
 EOF
