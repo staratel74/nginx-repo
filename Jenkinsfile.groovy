@@ -53,7 +53,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: # ${DOCKER_IMAGE}
+        image: ${DOCKER_IMAGE}
         ports:
         - containerPort: 80
 EOF
