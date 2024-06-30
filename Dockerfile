@@ -5,7 +5,6 @@ FROM ubuntu:latest
 RUN apt-get update && apt-get install -y nginx && apt-get install mc -y
 
 # Удаляем дефолтную страницу Nginx и создаем свою
-# RUN echo 'Hello Jenny! Hello Sun!' > /var/www/html/index.html
 COPY index.html /var/www/html/index.html
 
 
