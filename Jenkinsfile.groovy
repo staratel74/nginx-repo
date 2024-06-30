@@ -4,7 +4,7 @@ pipeline {
         DOCKER_CREDENTIALS_ID = 'dockerhub-staratel'
         KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-yandex'
         REPO_URL = 'git@github.com:staratel74/nginx-repo.git'
-        DOCKER_IMAGE = 'staratel/nginx-repo:v1.10.0
+        DOCKER_IMAGE = 'staratel/nginx-repo:v1.10.0'
     }
     stages {
         stage('Clone Repository') {
