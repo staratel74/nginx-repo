@@ -1,17 +1,54 @@
+// pipeline {
+//     agent any
+//     environment {
+//         DOCKER_CREDENTIALS_ID = 'dockerhub-staratel'
+//         KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-yandex'
+//         REPO_URL = 'git@github.com:staratel74/nginx-repo.git'
+//         DOCKER_IMAGE = 'staratel/nginx-repo:v1.10.0'
+//     }
+//     stages {
+//         stage('Clone Repository') {
+//             steps {
+//                 git branch: 'main', credentialsId: 'github-staratel74', url: "${REPO_URL}"
+//             }
+//         }
+
 pipeline {
     agent any
     environment {
         DOCKER_CREDENTIALS_ID = 'dockerhub-staratel'
-        KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-yandex'
         REPO_URL = 'git@github.com:staratel74/nginx-repo.git'
-        DOCKER_IMAGE = 'staratel/nginx-repo:v1.10.0'
+        KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-yandex'
+        TARGET_TAG = '1.10.2' // Тег, при котором будет выполняться сборка и деплой
     }
     stages {
         stage('Clone Repository') {
             steps {
+                // Клонируем репозиторий из GitHub
                 git branch: 'main', credentialsId: 'github-staratel74', url: "${REPO_URL}"
             }
         }
+        stage('Get Git Tag') {
+            steps {
+                script {
+                    // Получаем текущий тег из Git
+                    env.GIT_TAG = sh(returnStdout: true, script: "git describe --tags `git rev-list --tags --max-count=1`").trim()
+                    echo "Current Git Tag: ${env.GIT_TAG}"
+                }
+            }
+        }
+        stage('Check Tag') {
+            when {
+                expression {
+                    // Проверяем, что текущий тег совпадает с целевым тегом
+                    return env.GIT_TAG == env.TARGET_TAG
+                }
+            }
+            steps {
+                echo "Tag ${env.GIT_TAG} matches target tag ${env.TARGET_TAG}. Proceeding with build and deployment."
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
