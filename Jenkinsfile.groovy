@@ -16,6 +16,7 @@
 pipeline {
     agent any
     environment {
+        DOCKER_IMAGE = ""
         DOCKER_CREDENTIALS_ID = 'dockerhub-staratel'
         REPO_URL = 'git@github.com:staratel74/nginx-repo.git'
         KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-yandex'
