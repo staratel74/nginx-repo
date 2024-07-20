@@ -16,11 +16,9 @@
 pipeline {
     agent any
     environment {
-        DOCKER_IMAGE = ""
         DOCKER_CREDENTIALS_ID = 'dockerhub-staratel'
         REPO_URL = 'git@github.com:staratel74/nginx-repo.git'
         KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-yandex'
-        TARGET_TAG = '1.10.3' // Тег, при котором будет выполняться сборка и деплой
     }
     stages {
         stage('Clone Repository') {
@@ -33,44 +31,22 @@ pipeline {
             steps {
                 script {
                     // Получаем текущий тег из Git
-                    env.GIT_TAG = sh(returnStdout: true, script: "git describe --tags `git rev-list --tags --max-count=1`").trim()
-                    echo "Current Git Tag: ${env.GIT_TAG}"
-                }
-            }
-        }
-        stage('Check Tag') {
-            when {
-                expression {
-                    // Проверяем, что текущий тег совпадает с целевым тегом
-                    return env.GIT_TAG == env.TARGET_TAG
-                }
-            }
-            steps {
-                echo "Tag ${env.GIT_TAG} matches target tag ${env.TARGET_TAG}. Proceeding with build and deployment."
-            }
-        }
-        stage('Build Docker Image') {
-            when {
-                expression {
-                    return env.GIT_TAG == env.TARGET_TAG
-                }
-            }
-            steps {
-                script {
+                    env.GIT_TAG = sh(returnStdout: true, script: "git describe --tags").trim()
                     // Устанавливаем имя Docker-образа с тегом
                     env.DOCKER_IMAGE = "staratel/nginx-repo:${env.GIT_TAG}"
                     echo "Docker Image: ${env.DOCKER_IMAGE}"
+                }
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
                     // Строим Docker-образ
                     docker.build("${DOCKER_IMAGE}")
                 }
             }
         }
         stage('Push Docker Image') {
-            when {
-                expression {
-                    return env.GIT_TAG == env.TARGET_TAG
-                }
-            }
             steps {
                 script {
                     // Пушим Docker-образ в Docker Hub
