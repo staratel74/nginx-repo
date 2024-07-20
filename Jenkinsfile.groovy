@@ -31,7 +31,7 @@ pipeline {
             steps {
                 script {
                     // Получаем текущий тег из Git
-                    env.GIT_TAG = sh(returnStdout: true, script: "git describe --tags").trim()
+                    env.GIT_TAG = sh(returnStdout: true, script: "git describe --tags --abbrev=0").trim()
                     // Устанавливаем имя Docker-образа с тегом
                     env.DOCKER_IMAGE = "staratel/nginx-repo:${env.GIT_TAG}"
                     echo "Docker Image: ${env.DOCKER_IMAGE}"
