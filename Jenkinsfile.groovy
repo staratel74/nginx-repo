@@ -1,18 +1,3 @@
-// pipeline {
-//     agent any
-//     environment {
-//         DOCKER_CREDENTIALS_ID = 'dockerhub-staratel'
-//         KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-yandex'
-//         REPO_URL = 'git@github.com:staratel74/nginx-repo.git'
-//         DOCKER_IMAGE = 'staratel/nginx-repo:v1.10.0'
-//     }
-//     stages {
-//         stage('Clone Repository') {
-//             steps {
-//                 git branch: 'main', credentialsId: 'github-staratel74', url: "${REPO_URL}"
-//             }
-//         }
-
 pipeline {
     agent any
     environment {
@@ -113,9 +98,7 @@ spec:
   ports:
   - protocol: TCP
     port: 80
-    targetPort: 80
-    nodePort: 30000
-  type: NodePort
+  type: LoadBalancer
 EOF
                         '''
                     }
