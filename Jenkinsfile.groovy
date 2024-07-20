@@ -38,6 +38,19 @@ pipeline {
                 }
             }
         }
+
+        stage('Check Tag') {
+            steps {
+                script {
+                    if (env.GIT_TAG != 'v1.10.8') {
+                        echo "Tag is not v1.10.8. Exiting pipeline."
+                        currentBuild.result = 'SUCCESS'
+                        return
+                    }
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
