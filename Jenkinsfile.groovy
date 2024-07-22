@@ -68,7 +68,7 @@ metadata:
   labels:
     app: nginx
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: nginx
@@ -98,7 +98,6 @@ spec:
   ports:
   - protocol: TCP
     port: 80
-    targetPort: 80
   type: LoadBalancer
 EOF
                         '''
