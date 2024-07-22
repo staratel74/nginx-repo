@@ -98,6 +98,7 @@ spec:
   ports:
   - protocol: TCP
     port: 80
+    targetPort: 80
   type: LoadBalancer
 EOF
                         '''
